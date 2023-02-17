@@ -1,5 +1,6 @@
-# DataProcessScript
-Data Process Script language
+# Data Processing Script
+
+Data Processing Script language
 
 This is a script languange intended for a sequencial execution to achieve a final file with data processed by several command lines.
 
@@ -7,15 +8,15 @@ The execution is sequencial and have no conditional or jump. And have a simple e
 
 The struct of script consists in Sections and Variables.
 
-Sections are between brackets [].
+Sections are between brackets `[` `]`.
 
-Variable are between \$.
+Variable are between `$`.
 
 Sections and Variable names are case insensitive.
 
-It is the same thing: [section]  or [Section]  or [SECTION]
+It is the same thing: `[section]`  or `[Section]`  or `[SECTION]`.
 
-It is the same thing: \$variable\$ or \$Variable\$ or \$VARIABLE\$
+It is the same thing: `$variable$` or `$Variable$` or `$VARIABLE$`.
 
 Some Sections need be closed and some do not.
 
@@ -53,22 +54,22 @@ An error will be trigged and execution stoped.
 
 ### Sections:
 
-| Section   | Type  | Description                      |
-| --------- | ----- | -------------------------------- |
-| COMMENT   | Close | Comment                          |
-| CR        |       | Carrige Return                   |
-| LF        |       | Line Feed                        |
-| CRLF      |       | Carrige Return and Line Feed     |
-| RUNLEVELS |       | Define label for each Run Levels |
-| RUNLEVEL  |       | Run Level                        |
-| ERROR     | Close | Error handler                    |
-| CMD       |       | Set commands                     |
-| VAR       | Close | Set variable                     |
-| RUN       |       | Run command                      |
-| PRINT     | Close | Print on screen                  |
-| WRITE     | Close | Write to file                    |
-| READ      |       | Read from file                   |
-| CHD       |       | Change directory                 |
+| Section       | Type  | Description                      |
+| ------------- | ----- | -------------------------------- |
+| `[COMMENT]`   | Close | Comment                          |
+| `[CR]`        |       | Carrige Return                   |
+| `[LF]`        |       | Line Feed                        |
+| `[CRLF]`      |       | Carrige Return and Line Feed     |
+| `[RUNLEVELS]` |       | Define label for each Run Levels |
+| `[RUNLEVEL]`  |       | Run Level                        |
+| `[ERROR]`     | Close | Error handler                    |
+| `[CMD]`       |       | Set commands                     |
+| `[VAR]`       | Close | Set variable                     |
+| `[RUN]`       |       | Run command                      |
+| `[PRINT]`     | Close | Print on screen                  |
+| `[WRITE]`     | Close | Write to file                    |
+| `[READ]`      |       | Read from file                   |
+| `[CHD]`       |       | Change directory                 |
 
 ### System Variables:
 
@@ -79,13 +80,14 @@ An error will be trigged and execution stoped.
 | `$CWD$`      | Current work directory    |
 | `$ERROR$`    | Object with error details |
 
-### Sections:
+## Sections:
 
-#### `[COMMENT]`
+### `[COMMENT]`
 
 It is a section that will not be processed and ignored on exection.
 
-#### `[CR]` `[LF]` `[CRLF]`
+### `[CR]` `[LF]` `[CRLF]`
+
 Set the new line character to be used on `[VAR]`, `[WRITE]` and `[PRINT]`.
 
 | Section  | Meaning                            |
@@ -94,7 +96,8 @@ Set the new line character to be used on `[VAR]`, `[WRITE]` and `[PRINT]`.
 | `[LF]`   | Line Feed     : \n, x0C, char(13). |
 | `[CRLF]` | Carrige Return and Line Feed.      |
 
-#### `[RUNLEVELS]`
+### `[RUNLEVELS]`
+
 Label each Run Level.
 
 Example:
@@ -108,9 +111,10 @@ DebugLevel3
 DebugLevel1 DebugLevel3
 ```
 
-*** TODO: Not implemented.
+*** TODO: *Implement level names. Not implemented yet.*
 
-#### `[RUNLEVEL]`
+### `[RUNLEVEL]`
+
 Value that can be used on Closed Sections to use/ignore specific lines.
 
 The value is numeric and the bitwise comparison will filter the line to be used.
@@ -127,7 +131,10 @@ You can not se the Run Level with a variable value.
 
 See more on Closed Sections (where it is used).
 
-#### `[ERROR]`
+*** TODO: *With the `[RUNLEVELS]` it will not use bitwise comparison.*
+
+### `[ERROR]`
+
 What will be printed when an error is trigged.
 
 This is the only section the system variable \$ERROR\$ is be available. See more on Variables \$ERROR\$.
@@ -145,7 +152,8 @@ $Error.Section$
 
 See more on Closed Sections.
 
-#### `[CMD]`
+### `[CMD]`
+
 Is a list of command to be used on `[RUN]` section.
 
 This is the unique dynamic generated object.
@@ -166,7 +174,8 @@ Command_3 = filename.exe /ParamEx
 
 See mor on Variables \$CMD\$
 
-#### `[VAR]`
+### `[VAR]`
+
 Set a variable.
 
 Variables can have only alphanumeric values, underscore `_` and are case insensitive.
@@ -180,28 +189,30 @@ Value 1
 
 See more on Closed Sections.
 
-#### `[RUN]`
+### `[RUN]`
+
 Run one line of a command line.
 
 Variables with multiple lines will be joined with a space replacing the new line character.
 
 Example:
-´´´
+```
 [RUN output_from_run]
 cmd.exe /C echo Printing some value.
 
 [PRINT]
-\$output_from_run\$
+$output_from_run$
 [/PRINT]
-´´´
+```
 
-Like in a Closed Section, you can use the backtick `\`` to continue the command line on the next line.
+Like in a Closed Section, you can use the backtick `` ` `` to continue the command line on the next line.
 
 But it is feature only works on literal command, not inside variables.
 
 See more on Closed Sections backtick.
 
-#### `[PRINT]`
+### `[PRINT]`
+
 Print on screen.
 
 It does not have an output value.
@@ -223,7 +234,8 @@ Foo's value is: $foo$
 
 See more on Closed Sections.
 
-#### `[WRITE]`
+### `[WRITE]`
+
 Write to file.
 
 Example:
@@ -241,11 +253,12 @@ To file.
 [/WRITE]
 ```
 
-*** TODO: Escape the close bracket when it is part of the literal filename. On variable it is not a issue.
+*** TODO: *Escape the close bracket when it is part of the literal filename. On variable it is not a issue.*
 
 See more on Closed Sections.
 
-#### `[READ]`
+### `[READ]`
+
 Read file.
 
 It have two obligatory parameters: the file and the output variable.
@@ -259,11 +272,12 @@ $output_variable$
 [/PRINT]
 ```
 
-*** TODO: Escape the close bracket when it is part of the literal filename. On variable it is not a issue.
+*** TODO: *Escape the close bracket when it is part of the literal filename. On variable it is not a issue.*
 
 See more on Closed Sections parameters.
 
-#### `[CHD]`
+### `[CHD]`
+
 Change current directory.
 
 Example:
@@ -275,9 +289,10 @@ Example:
 [CHD $variable$]
 ```
 
-*** TODO: Escape the close bracket when it is part of the literal path. On variable it is not a issue.
+*** TODO: *Escape the close bracket when it is part of the literal path. On variable it is not a issue.*
 
 ### Closed Sections:
+
 Closed Sections can have parameters. It consists in varaibles and an output.
 
 It possible to define what variables will be procced on section and indicate the output of the section.
@@ -368,7 +383,7 @@ Example:
 [/PRINT]
 ```
 
-To ignore the line wrap, add as last character of the line a backtick `\``.
+To ignore the line wrap, add as last character of the line a backtick `` ` ``.
 
 If have anothe character after that, the next line will be a another line.
 
@@ -416,10 +431,12 @@ One line with one new line character at the begin and one at the end.
 
 ## Variables:
 
-#### `$RUNLEVEL$`
+### `$RUNLEVEL$`
+
 Run Level value of the script.
 
-#### `$CMD$`
+### `$CMD$`
+
 System object with commands to be used on `[RUN]` section.
 
 Example:
@@ -439,10 +456,12 @@ $CMD.Command_2$ -f file1.txt
 $CMD.Command_3$ /xyz
 ```
 
-#### `$CWD$`
+### `$CWD$`
+
 Current work directory
 
-#### `$ERROR$`
+### `$ERROR$`
+
 This variable is only availabel on [ERROR] section.
 
 | Poperty               | Description                                        |
